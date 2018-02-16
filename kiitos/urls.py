@@ -7,5 +7,5 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('observation-points/', views.list_observation_points),
     path('observation-points/<int:pk>/', views.show_observation_point_details),
-    path('observations/<int:pk>/', views.add_observation),
+    path('observations/', views.add_observation),
 ]

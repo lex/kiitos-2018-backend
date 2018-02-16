@@ -28,13 +28,15 @@ def show_observation_point_details(request, pk, format=None):
 
 
 @api_view(['POST'])
-def add_observation(request, pk, format=None):
+def add_observation(request, format=None):
+    observation_point_id = request.data.get('point_id', -1)
+
     try:
-        point = ObservationPoint.objects.get(pk=pk)
+        point = ObservationPoint.objects.get(pk=observation_point_id)
     except ObservationPoint.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
 
-    data = request.data
+    data = {'temperature': request.data.get('temperature', None)}
 
     serializer = ObservationSerializer(data=data)
 
