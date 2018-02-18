@@ -1,0 +1,19 @@
+language: python
+python:
+- 3.6
+before_script:
+- pip install pipenv
+- pipenv install
+services: postgresql
+addons:
+  postgresql: '9.6'
+script:
+- psql -c "create database travisbase;" -U postgres
+- pipenv run python manage.py makemigrations
+- pipenv run python manage.py migrate
+- pipenv run python manage.py test
+deploy:
+  provider: heroku
+  app: kiitos-2018
+  api_key:
+    secure: EdyTQWFiYuxuWPiNWma5tZwUXRl/2k8zODKJ4NJMZaekmo/H3Oo8kgAQm2dWHpZvxL+LlhEOjGnE5miSIZPbs1wB3vV3xoylmSefuXgmsyMVu8j51vyHA7jhk1i0kEDWn7zjgKO/jTs0Zl9bu6c5W6qZTocI/3WA1klvoMDWFY4fxuEu1Jqrci0Bjm1UgjW6GCgStskphUCrz/F83r1uYfQB6m/RWFO9d0OkEClyoKFBCWSWLraWs1J3FTbrl2MHtqd8kFSCbASaKJFx47MRU5zD89T6hUSulGZnzx6NTwmEnWZ5mnRbR7ZSlx1TmDLWWCKXAtMB87BswqqvX7eksfHwFe7IffnorZ+jEX+e0i8dpFsm+Fgvdpjx1ESHR7JFcoDwZk7xVTxASIedhpUOLTapZtF9ZoBgY11JnHdwLTHZkOTLULJEpqyOuKHIJfHx56M+Qf0/I74Fmv2Kz/jjof8pcv7qL6xbLT2iKqe804uoqrbK4Jh/g9NvYi60Jo8Hn5GnF05vsaVHMfSvdPkqCuBuYMoui301B87IzSUr5B6GRwQU+HI3l/OeFGJ/GChmc8t7ES4pM6VCeZOHFQs/wzKGXgjukFiimOp38w8F1Y/jROa0bp49px/TzdbNXBqAUDf8xUTXQ+K/P90iYfkI+Y4M2PvHZnyUACSwxVvgU4I=
