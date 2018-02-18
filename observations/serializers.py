@@ -14,12 +14,12 @@ class ObservationPointSerializer(serializers.ModelSerializer):
                   'latest_observation', )
 
     def get_latest_observation(self, obj):
-        latest_observation = obj.observation_set.first()
+        latest_observation = obj.observation_set.last()
 
         if not latest_observation:
             return None
 
-        s = ObservationSerializer(obj.observation_set.first())
+        s = ObservationSerializer(latest_observation)
         return s.data
 
 
