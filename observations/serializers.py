@@ -1,5 +1,6 @@
 from .models import ObservationPoint, Observation
 from rest_framework import serializers
+import datetime
 
 
 class ObservationPointSerializer(serializers.ModelSerializer):
@@ -31,7 +32,10 @@ class ObservationPointDetailsSerializer(serializers.ModelSerializer):
         fields = ('id', 'name', 'latitude', 'longitude', 'observations', )
 
     def get_observations(self, obj):
-        s = ObservationSerializer(obj.observation_set.all(), many=True)
+        date_from = datetime.datetime.now() - datetime.timedelta(days=1)
+        s = ObservationSerializer(
+            obj.observation_set.filter(timestamp__gte=date_from).all(),
+            many=True)
         return s.data
 
 
