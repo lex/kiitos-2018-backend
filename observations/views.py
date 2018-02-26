@@ -38,9 +38,18 @@ def add_observation(request, format=None):
 
     data = {'temperature': request.data.get('temperature', None)}
 
+    temperature = None
+
+    try:
+        temperature = float(data['temperature'])
+    except ValueError:
+        return Response(
+            {'error': 'temperature does not seem valid'},
+            status=status.HTTP_400_BAD_REQUEST)
+
     serializer = ObservationSerializer(data=data)
 
-    if serializer.is_valid():
+    if serializer.is_valid() and temperature >= 0.0:
         serializer.save(observation_point=point)
         return Response(serializer.data)
 

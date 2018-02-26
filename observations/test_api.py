@@ -86,6 +86,12 @@ class AddObservationTests(TestCase):
         response = add_observation(request)
         self.assertEqual(response.status_code, 400)
 
+    def test_add_returns_400_on_negative_observation_temperature(self):
+        data = {'point_id': self.point.id, 'temperature': "-1.0"}
+        request = self.factory.post('/observations/', data, format='json')
+        response = add_observation(request)
+        self.assertEqual(response.status_code, 400)
+
     def test_add_adds_observation_to_observation_point(self):
         data = {'point_id': self.point.id, 'temperature': 512.0}
         request = self.factory.post('/observations/', data, format='json')
