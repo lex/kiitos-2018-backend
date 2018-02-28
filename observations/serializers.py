@@ -33,9 +33,12 @@ class ObservationPointDetailsSerializer(serializers.ModelSerializer):
 
     def get_observations(self, obj):
         date_from = datetime.datetime.now() - datetime.timedelta(days=1)
+
         s = ObservationSerializer(
-            obj.observation_set.filter(timestamp__gte=date_from).all(),
+            obj.observation_set.filter(
+                timestamp__gte=date_from).order_by('timestamp').all(),
             many=True)
+
         return s.data
 
 
